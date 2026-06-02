@@ -63,6 +63,18 @@ body.dark-mode #themeToggle {
     height: 100%;
     object-fit: cover;
 }
+#homebaseFooter {
+    position: fixed;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-size: 10px;
+    opacity: 0.6;
+
+    pointer-events: none;
+    user-select: none;
+}
 </style>
 
 <script>
@@ -133,5 +145,8 @@ button.addEventListener("click", () => {
     <a href="http://www.ftgames.xyz/f111_game">Play F111 Game</a>
     <br>
       <a href="http://www.ftgames.xyz/scratch_playground">Play Scratch Playground</a>
+    <footer id="homebaseFooter">
+    Powered by Homebase
+</footer>
   </body>
 </html>
