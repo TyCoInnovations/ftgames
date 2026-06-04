@@ -142,10 +142,52 @@
     }
     
   </style>
+  <style>
+#topBanner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #ffcc00;
+  color: #000;
+  padding: 12px 50px 12px 15px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  z-index: 9999;
+}
+
+#closeBanner {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #000;
+}
+
+#closeBanner:hover {
+  opacity: 0.7;
+}
+</style>
+  <script>
+document.getElementById("closeBanner").addEventListener("click", function() {
+  document.getElementById("topBanner").style.display = "none";
+});
+</script>
   <meta name="theme-color" content="#000000">
   
 </head>
 <body>
+  <div id="topBanner">
+  <span id="bannerText">
+    Placeholder text goes here. Change this to whatever you want!
+  </span>
+  <button id="closeBanner">&times;</button>
+</div>
   <a href="https://ftgames.xyz"
    style="
       position:fixed;
