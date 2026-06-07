@@ -51,22 +51,55 @@
             opacity: 0.7;
         }
 
-        .construction {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+     .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-            text-align: center;
-            height: calc(100vh - 70px);
-            padding: 20px;
-        }
+    text-align: center;
 
-        .panda {
-            font-size: 8rem;
-            margin-bottom: 20px;
-        }
+    min-height: calc(100vh - 70px);
 
+    padding: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(3rem, 7vw, 5rem);
+    margin-bottom: 24px;
+}
+
+.description {
+    max-width: 700px;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    opacity: 0.8;
+
+    margin-bottom: 40px;
+}
+
+.play-button {
+    display: inline-block;
+
+    padding: 16px 48px;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    color: white;
+    text-decoration: none;
+
+    background: #2d7cff;
+
+    border-radius: 14px;
+
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.play-button:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
         h1 {
             font-size: 3rem;
             margin-bottom: 15px;
@@ -104,16 +137,16 @@
         </div>
     </nav>
 
-    <main class="construction">
-        <div class="panda">🐼🔨</div>
+    <main class="hero">
+    <h1>Made by students, for students.</h1>
 
-        <h1>Under Construction</h1>
+    <p class="description">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Replace this text with a description of FT Games and what your platform offers.
+    </p>
 
-        <p>
-            We're working hard on something awesome.<br>
-            Check back soon!
-        </p>
-    </main>
+    <a href="/games" class="play-button">Play</a>
+</main>
 
 </body>
 </html>
