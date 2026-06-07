@@ -95,7 +95,35 @@
 
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
+.button-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
+.donate-button {
+    display: inline-block;
+
+    padding: 16px 48px;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    color: white;
+    text-decoration: none;
+
+    background: #ff4fa3;
+
+    border-radius: 14px;
+
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.donate-button:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
 .play-button:hover {
     transform: translateY(-3px);
     opacity: 0.9;
@@ -137,7 +165,18 @@
         FT Games is a collection of games created by a few Year 7 students. We aim to provide experiences that are easy to access and amazing to play from anywhere.
     </p>
 
+    <div class="button-group">
     <a href="/games" class="play-button">Play</a>
+
+    <a
+        href="https://donate.stripe.com/4gMeVd0Hd65z6Gs10FaAw00"
+        class="donate-button"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        Donate
+    </a>
+</div>
 </main>
 
 </body>
