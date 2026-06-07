@@ -12,6 +12,7 @@
 </div>
 
 <button id="themeToggle">🌙</button>
+<button id="supportButton">♥</button>
 
 <style>
   #themeToggle {
@@ -121,6 +122,71 @@ body.dark-mode .game-card-thumbnail {
     pointer-events: none;
     user-select: none;
 }
+
+#supportButton {
+    position: fixed;
+    top: 8px;
+    right: 64px;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    border-radius: 12px;
+
+    font-size: 24px;
+    cursor: pointer;
+
+    z-index: 100000;
+
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.dark-mode #supportButton {
+    background: rgba(50,50,50,0.9);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 100002;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    position: relative;
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+body.dark-mode .modal-content {
+    background: #222;
+    color: white;
+}
+
+#closeModal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
 </style>
 
 <script>
@@ -182,6 +248,23 @@ button.addEventListener("click", () => {
         setCookie("theme", "dark", 365);
     }
 });
+const supportButton = document.getElementById("supportButton");
+const supportModal = document.getElementById("supportModal");
+const closeModal = document.getElementById("closeModal");
+
+supportButton.addEventListener("click", () => {
+    supportModal.style.display = "flex";
+});
+
+closeModal.addEventListener("click", () => {
+    supportModal.style.display = "none";
+});
+
+supportModal.addEventListener("click", (e) => {
+    if (e.target === supportModal) {
+        supportModal.style.display = "none";
+    }
+});
 </script>
     
     <h1>Welcome to FT Games!</h1>
@@ -221,5 +304,19 @@ button.addEventListener("click", () => {
     <footer id="homebaseFooter">
     Powered by Homebase
 </footer>
+    <div id="supportModal" class="modal">
+    <div class="modal-content">
+        <button id="closeModal">✕</button>
+
+        <h2>Support FT Games ❤️</h2>
+
+        <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+
+        <stripe-buy-button
+            buy-button-id="buy_btn_1TfXGhGCnoRB5b5RnCaLI8mq"
+            publishable-key="pk_live_51TfX1NGCnoRB5b5RLmWVpY0oQKf9LBZeHL4DP3ENz2ytEmHmPWuAq7XpEJIBZ66QMdzLy2ji89NT7plkDDyTI4Pm00tppv5RSV">
+        </stripe-buy-button>
+    </div>
+</div>
   </body>
 </html>
