@@ -1,104 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Activating FT Prime</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
-body {
-    margin:0;
-    background:black;
-    color:gold;
-    font-family:Montserrat;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    text-align:center;
-}
-
-.box {
-    border:2px solid gold;
-    padding:40px;
-    width:320px;
-}
-
-.rocket {
-    font-size:55px;
-    animation: shake 0.35s infinite;
-    margin-bottom:10px;
-}
-
-@keyframes shake {
-    0% { transform: translate(0px, 0px) rotate(0deg); }
-    25% { transform: translate(3px, -2px) rotate(-6deg); }
-    50% { transform: translate(-3px, 2px) rotate(6deg); }
-    75% { transform: translate(2px, 2px) rotate(-3deg); }
-    100% { transform: translate(0px, 0px) rotate(0deg); }
-}
-
-input {
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-    background:#111;
-    border:1px solid gold;
-    color:white;
-}
-
-button {
-    width:100%;
-    padding:12px;
-    background:gold;
-    border:none;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-#form { display:none; }
-</style>
-</head>
-
-<body>
-
-<div class="box">
-
-    <div id="loading">
-        <div class="rocket">🚀</div>
-        <h3>Activating subscription...</h3>
-        <p style="opacity:0.6;font-size:12px;">verifying payment...</p>
-    </div>
-
-    <div id="form">
-        <h2>👑 Create Account</h2>
-        <p>Finish setup to unlock FT Prime</p>
-
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Create password">
-
-        <button onclick="create()">Activate Prime</button>
-
-        <p id="status"></p>
-    </div>
-
-</div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-
-import {
-    getFirestore,
-    doc,
-    setDoc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAEyiQE_6KdvJ47g7CdVAL6XrQXX56V3MQ",
@@ -110,56 +13,24 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* 🔥 loading delay */
 setTimeout(() => {
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("form").style.display = "block";
-}, 2000);
 
-/* 🧠 auto-check if user already exists */
-window.create = async () => {
-    try {
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+    onAuthStateChanged(auth, async (user) => {
 
-        let userCred;
-
-        try {
-            userCred = await createUserWithEmailAndPassword(auth, email, password);
-        } catch (e) {
-            // if account exists, just log in
-            userCred = await signInWithEmailAndPassword(auth, email, password);
-        }
-
-        const ref = doc(db, "users", userCred.user.uid);
-        const snap = await getDoc(ref);
-
-        // 🚫 prevent double activation abuse
-        if (snap.exists() && snap.data().prime === true) {
-            document.getElementById("status").textContent = "Already activated 👑";
-            setTimeout(() => window.location.href = "/prime/", 1000);
+        if (!user) {
+            window.location.href = "/prime/login/";
             return;
         }
 
-        // 🔥 activate Prime
-        await setDoc(ref, {
-            email: email,
-            prime: true,
-            source: "stripe",
-            activatedAt: new Date().toISOString()
+        // 🔥 ONLY mark payment as pending (NOT prime)
+        await setDoc(doc(db, "users", user.uid), {
+            email: user.email,
+            pendingStripe: true
         }, { merge: true });
 
-        document.getElementById("status").textContent = "Prime activated!";
+        window.location.href = "/prime/";
 
-        setTimeout(() => {
-            window.location.href = "/prime/";
-        }, 1000);
+    });
 
-    } catch (e) {
-        document.getElementById("status").textContent = e.message;
-    }
-};
+}, 2000);
 </script>
-
-</body>
-</html>
