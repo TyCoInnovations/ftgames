@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FT Prime Exclusives</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin:0;
+    background:black;
+    color:gold;
+    font-family:Montserrat;
+}
+
+/* NAVBAR */
+.navbar {
+    position:sticky;
+    top:0;
+    z-index:9999;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:15px 20px;
+    background:#111;
+    border-bottom:1px solid gold;
+}
+
+.nav-left, .nav-right {
+    display:flex;
+    gap:18px;
+    align-items:center;
+}
+
+.navbar a {
+    color:gold;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14px;
+    opacity:0.85;
+}
+
+.navbar a:hover {
+    opacity:1;
+    text-decoration:underline;
+}
+
+/* PAGE TITLE */
+h1 {
+    text-align:center;
+    margin-top:30px;
+    font-size:3rem;
+}
+
+/* GRID */
+.game-card-grid {
+    display:grid;
+    gap:20px;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    margin:40px;
+}
+
+/* GAME CARD (RECOLOURED TO PRIME STYLE) */
+.game-card {
+    color:gold;
+    text-decoration:none;
+
+    border:2px solid gold;
+    border-radius:16px;
+
+    background:#000;
+
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+
+    transition:0.2s ease;
+}
+
+.game-card:hover {
+    transform:translateY(-4px);
+    box-shadow:0 0 20px rgba(255,215,0,0.2);
+}
+
+.game-card-thumbnail {
+    background:#111;
+    height:160px;
+    object-fit:cover;
+    width:100%;
+}
+
+.game-card-content {
+    padding:16px;
+}
+
+.game-card-title {
+    font-size:20px;
+    margin:0 0 8px;
+    color:gold;
+}
+
+.game-card-description {
+    line-height:1.5;
+    margin:0;
+    color:gold;
+    opacity:0.85;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <div class="nav-left">
+        <a href="/prime/index">Homepage</a>
+        <a href="/prime/index">Prime</a>
+        <a href="/prime/exclusives">Exclusives</a>
+        <a href="#">Early Access</a>
+    </div>
+
+    <div class="nav-right">
+        <a href="#" onclick="logout()">Logout</a>
+        <a href="#">Manage</a>
+    </div>
+
+</div>
+
+<!-- TITLE -->
+<h1>👑 Exclusives</h1>
+
+<!-- GAME GRID (UNCHANGED CONTENT, JUST RE-STYLED) -->
+<section class="game-card-grid">
+
+    <a class="game-card" href="">
+        <img class="game-card-thumbnail" src="thumbnails/suggestion-box-thumbnail.png">
+        <div class="game-card-content">
+            <h2 class="game-card-title">Priority Suggestion Box</h2>
+            <p class="game-card-description">Whatever game you want, we'll make it our priority. Only with FT Prime.</p>
+        </div>
+    </a>
+
+</section>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAEyiQE_6KdvJ47g7CdVAL6XrQXX56V3MQ",
+    authDomain: "ft-games-prime.firebaseapp.com",
+    projectId: "ft-games-prime"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.logout = async () => {
+    await signOut(auth);
+    window.location.href = "/prime/login/";
+};
+</script>
+
+</body>
+</html>
