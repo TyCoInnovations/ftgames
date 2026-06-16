@@ -258,6 +258,20 @@
    ">
    Back to Homepage
 </a>
+  <div id="instructionsButton"
+     style="
+        position:fixed;
+        top:0;
+        left:0;
+        color:white;
+        font-size:12px;
+        font-family:Arial,sans-serif;
+        cursor:pointer;
+        z-index:999999;
+        padding:2px 4px;
+     ">
+     Instructions
+</div>
   <div class="money-fall" id="moneyFall"></div>
 
   <div class="left panel">
@@ -1164,5 +1178,14 @@ log('Game ready. Enjoy! 🎲', 'good');
   log('Roll distribution: ' + (ok ? '✅ Normal' : '⚠️ Variance — check console'), ok ? 'good' : 'warn');
 })();
 </script>
+  <script>
+  document.getElementById("instructionsButton").addEventListener("click", () => {
+      window.open(
+          "https://ftgames.xyz/idle_gacha_roller/instructions",
+          "instructions",
+          "width=800,height=600,resizable=yes,scrollbars=yes"
+      );
+  });
+  </script>
 </body>
 </html>
