@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FT Prime Members</title>
+<title>FT Prime Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -13,94 +13,159 @@ body {
     background:black;
     color:gold;
     font-family:Montserrat;
+    padding-top:80px;
 }
 
-.navbar {
+/* TOP BAR (simple reuse style) */
+.topbar {
     position:fixed;
     top:0;
+    left:0;
     width:100%;
     display:flex;
-    gap:20px;
-    padding:15px;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 20px;
     background:#111;
     border-bottom:1px solid gold;
+    z-index:9999;
 }
 
-.navbar a {
+.left, .right {
+    display:flex;
+    gap:18px;
+}
+
+.tab {
     color:gold;
     text-decoration:none;
-    font-weight:bold;
+    font-weight:700;
+    font-size:14px;
+    opacity:0.85;
 }
 
-.content {
-    padding-top:80px;
+.tab:hover {
+    opacity:1;
+    text-decoration:underline;
+}
+
+/* PAGE */
+.container {
+    max-width:900px;
+    margin:auto;
+    padding:40px;
     text-align:center;
 }
 
-.box {
-    margin-top:40px;
+h1 {
+    font-size:3rem;
+    margin-bottom:10px;
+}
+
+.subtitle {
+    opacity:0.8;
+    margin-bottom:40px;
+}
+
+/* CARDS */
+.cards {
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.card {
+    width:300px;
+    background:#000;
+    border:2px solid gold;
+    padding:25px;
+    text-align:left;
+    transition:0.2s;
+}
+
+.card:hover {
+    transform:translateY(-5px);
+}
+
+.card .emoji {
+    font-size:40px;
+}
+
+.card h2 {
+    margin:10px 0;
+}
+
+.card p {
+    opacity:0.85;
+    line-height:1.5;
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR (placeholders for later pages) -->
-<div class="navbar">
-    <a href="/prime/index.html">Home</a>
-    <a href="#">Games</a>
-    <a href="#">Updates</a>
-    <a href="#">Profile</a>
+<!-- TOP BAR -->
+<div class="topbar">
+
+    <div class="left">
+        <a href="/prime/index.html" class="tab">Homepage</a>
+        <a href="/prime/index.html" class="tab">Prime</a>
+        <a href="#" class="tab">Exclusives</a>
+        <a href="#" class="tab">Early Access</a>
+    </div>
+
+    <div class="right">
+        <a href="#" class="tab" onclick="logout()">Logout</a>
+        <a href="#" class="tab">Manage</a>
+    </div>
+
 </div>
 
-<div class="content">
+<!-- CONTENT -->
+<div class="container">
+
     <h1>👑 FT Prime</h1>
-    <div class="box">
-        <p>Loading members area...</p>
+    <div class="subtitle">Greetings supporter, here's your reccomended features.</div>
+
+    <div class="cards">
+
+        <!-- CARD 1 -->
+        <div class="card">
+            <div class="emoji">🚀</div>
+            <h2>Early Access</h2>
+            <p>Be the first to test new games and features before anyone else gets access. Included with your membership.</p>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="card">
+            <div class="emoji">👑</div>
+            <h2>Exclusive Content</h2>
+            <p>Get exclusive subscriber-only games that only FT Prime subscribers can use. Free with your subscription.</p>
+        </div>
+
     </div>
+
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAEyiQE_6KdvJ47g7CdVAL6XrQXX56V3MQ",
     authDomain: "ft-games-prime.firebaseapp.com",
-    projectId: "ft-games-prime",
-    storageBucket: "ft-games-prime.firebasestorage.app",
-    messagingSenderId: "887277428440",
-    appId: "1:887277428440:web:132b0b41e1bd3ca9fe81ad"
+    projectId: "ft-games-prime"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 
-onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        window.location.href = "/prime/login/";
-        return;
-    }
-
-    const ref = doc(db, "users", user.uid);
-    const snap = await getDoc(ref);
-    const data = snap.data();
-
-    // ❌ not paid
-    if (!data || !data.pendingStripe) {
-        window.location.href = "/prime-subscribe.html";
-        return;
-    }
-
-    // ✅ activate Prime
-    await setDoc(ref, {
-        prime: true,
-        pendingStripe: false
-    }, { merge: true });
-
-});
+/* logout */
+window.logout = async () => {
+    await signOut(auth);
+    window.location.href = "/prime/login/";
+};
 </script>
 
 </body>
