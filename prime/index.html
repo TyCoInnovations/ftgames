@@ -79,29 +79,27 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 onAuthStateChanged(auth, async (user) => {
-
-    // NOT LOGGED IN → go login page
     if (!user) {
-        window.location.href = "/prime/login.html";
+        window.location.href = "/prime/login/";
         return;
     }
 
-    // CHECK FIRESTORE
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
     const data = snap.data();
 
-    // NOT PRIME → go subscribe page
-    if (!data || data.prime !== true) {
+    // ❌ not paid
+    if (!data || !data.pendingStripe) {
         window.location.href = "/prime-subscribe.html";
         return;
     }
 
-    // PRIME USER → show content
-    document.querySelector(".box").innerHTML = `
-        <h2>Welcome to FT Prime 👑</h2>
-        <p>You now have access to exclusive content.</p>
-    `;
+    // ✅ activate Prime
+    await setDoc(ref, {
+        prime: true,
+        pendingStripe: false
+    }, { merge: true });
+
 });
 </script>
 
