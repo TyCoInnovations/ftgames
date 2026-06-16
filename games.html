@@ -273,57 +273,7 @@ body.dark-mode .modal-content {
     margin-top: 2px;
 }
 
-.overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 100003;
-    justify-content: center;
-    align-items: center;
-}
 
-.prompt-box {
-    background: white;
-    width: 90%;
-    max-width: 500px;
-    padding: 24px;
-    border-radius: 16px;
-    text-align: left;
-}
-
-body.dark-mode .prompt-box {
-    background: #222;
-    color: white;
-}
-
-.prompt-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 16px;
-}
-
-.prompt-content {
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.prompt-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.prompt-buttons button {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.ok-btn {
-    font-weight: bold;
-}
 </style>
 
 <script>
@@ -420,51 +370,14 @@ window.addEventListener("load", () => {
     }
 
 });
-const adLink = document.getElementById("adBannerLink");
-const adPrompt = document.getElementById("adPrompt");
-const adCancelBtn = document.getElementById("adCancelBtn");
-const adOkBtn = document.getElementById("adOkBtn");
-// Replace link here when ad changes. also update image
-const adUrl = "https://whatsapp.com/channel/0029Vb7xlNC23n3alTF2Im0x";
-
-adLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    adPrompt.style.display = "flex";
-});
-
-adCancelBtn.addEventListener("click", () => {
-    adPrompt.style.display = "none";
-});
-
-adOkBtn.addEventListener("click", () => {
-    window.location.href = adUrl;
-});
 </script>
     
     <h1>Welcome to FT Games!</h1>
     <div class="ad-banner">
-    <a href="#" id="adBannerLink">
+    <a href="https://whatsapp.com/channel/0029Vb7xlNC23n3alTF2Im0x" id="adBannerLink">
         <img src="images/banner-ad.png" alt="Advertisement">
     </a>
     <div class="ad-label">AD</div>
-</div>
-
-<div class="overlay" id="adPrompt">
-    <div class="prompt-box">
-        <div class="prompt-title">
-            Advertisement - FT Games
-        </div>
-
-        <div class="prompt-content">
-            You are about to leave FT Games and visit an advertiser's website.
-            This website is not operated by FT Games or TyCo. Stay safe explorer.
-        </div>
-
-        <div class="prompt-buttons">
-            <button id="adCancelBtn">Back to Safety</button>
-            <button class="ok-btn" id="adOkBtn">Continue</button>
-        </div>
-    </div>
 </div>
     <section class="game-card-grid" aria-label="Games">
       <a class="game-card" href="/platformer_game">
