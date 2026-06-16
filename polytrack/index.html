@@ -21,11 +21,33 @@
    		">
    			Back to Homepage
 		</a>
-		
+		<div id="instructionsButton"
+     style="
+        position:fixed;
+        top:0;
+        left:0;
+        color:white;
+        font-size:12px;
+        font-family:Arial,sans-serif;
+        cursor:pointer;
+        z-index:999999;
+        padding:2px 4px;
+     ">
+     Instructions
+</div>
 		<canvas id="screen"></canvas>
 		<div id="ui"></div>
 		<div id="transition-layer"></div>
 
 		<script type="module" src="main.bundle.js" defer></script>
+		  <script>
+  document.getElementById("instructionsButton").addEventListener("click", () => {
+      window.open(
+          "https://ftgames.xyz/polytrack/instructions",
+          "instructions",
+          "width=800,height=600,resizable=yes,scrollbars=yes"
+      );
+  });
+  </script>
 	</body>
 </html>
