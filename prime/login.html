@@ -74,6 +74,13 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
+/* ✅ FIRESTORE ADDED */
+import {
+    getFirestore,
+    doc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
 const firebaseConfig = {
     apiKey: "AIzaSyAEyiQE_6KdvJ47g7CdVAL6XrQXX56V3MQ",
     authDomain: "ft-games-prime.firebaseapp.com",
@@ -85,6 +92,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app); // ✅ FIRESTORE INIT
 
 const status = document.getElementById("status");
 
@@ -101,8 +109,15 @@ window.login = async () => {
     }
 };
 
-onAuthStateChanged(auth, (user) => {
+/* ✅ THIS IS THE IMPORTANT PART YOU NEEDED */
+onAuthStateChanged(auth, async (user) => {
     if (user) {
+
+        await setDoc(doc(db, "users", user.uid), {
+            email: user.email,
+            prime: false
+        }, { merge: true });
+
         window.location.href = "/prime/index";
     }
 });
