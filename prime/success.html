@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Activate FT Prime</title>
+<title>Activating FT Prime</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
@@ -26,15 +26,15 @@ body {
 }
 
 .rocket {
-    font-size:50px;
-    animation: shake 0.4s infinite;
+    font-size:55px;
+    animation: shake 0.35s infinite;
     margin-bottom:10px;
 }
 
 @keyframes shake {
     0% { transform: translate(0px, 0px) rotate(0deg); }
-    25% { transform: translate(2px, -2px) rotate(-5deg); }
-    50% { transform: translate(-2px, 2px) rotate(5deg); }
+    25% { transform: translate(3px, -2px) rotate(-6deg); }
+    50% { transform: translate(-3px, 2px) rotate(6deg); }
     75% { transform: translate(2px, 2px) rotate(-3deg); }
     100% { transform: translate(0px, 0px) rotate(0deg); }
 }
@@ -57,9 +57,7 @@ button {
     cursor:pointer;
 }
 
-#form {
-    display:none;
-}
+#form { display:none; }
 </style>
 </head>
 
@@ -67,18 +65,17 @@ button {
 
 <div class="box">
 
-    <!-- LOADING STATE -->
     <div id="loading">
         <div class="rocket">🚀</div>
         <h3>Activating subscription...</h3>
+        <p style="opacity:0.6;font-size:12px;">verifying payment...</p>
     </div>
 
-    <!-- FORM STATE -->
     <div id="form">
         <h2>👑 Create Account</h2>
-        <p>Finish activation to unlock FT Prime</p>
+        <p>Finish setup to unlock FT Prime</p>
 
-        <input type="email" id="email" placeholder="Email used for payment">
+        <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Create password">
 
         <button onclick="create()">Activate Prime</button>
@@ -92,13 +89,15 @@ button {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
     getAuth,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 import {
     getFirestore,
     doc,
-    setDoc
+    setDoc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -111,23 +110,44 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ⏳ fake activation delay */
+/* 🔥 loading delay */
 setTimeout(() => {
     document.getElementById("loading").style.display = "none";
     document.getElementById("form").style.display = "block";
 }, 2000);
 
+/* 🧠 auto-check if user already exists */
 window.create = async () => {
     try {
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
 
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        let userCred;
 
-        await setDoc(doc(db, "users", userCred.user.uid), {
+        try {
+            userCred = await createUserWithEmailAndPassword(auth, email, password);
+        } catch (e) {
+            // if account exists, just log in
+            userCred = await signInWithEmailAndPassword(auth, email, password);
+        }
+
+        const ref = doc(db, "users", userCred.user.uid);
+        const snap = await getDoc(ref);
+
+        // 🚫 prevent double activation abuse
+        if (snap.exists() && snap.data().prime === true) {
+            document.getElementById("status").textContent = "Already activated 👑";
+            setTimeout(() => window.location.href = "/prime/", 1000);
+            return;
+        }
+
+        // 🔥 activate Prime
+        await setDoc(ref, {
             email: email,
-            prime: true
-        });
+            prime: true,
+            source: "stripe",
+            activatedAt: new Date().toISOString()
+        }, { merge: true });
 
         document.getElementById("status").textContent = "Prime activated!";
 
