@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Activate FT Prime</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin:0;
+    background:black;
+    color:gold;
+    font-family:Montserrat;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    text-align:center;
+}
+
+.box {
+    border:2px solid gold;
+    padding:40px;
+    width:320px;
+}
+
+.rocket {
+    font-size:50px;
+    animation: shake 0.4s infinite;
+    margin-bottom:10px;
+}
+
+@keyframes shake {
+    0% { transform: translate(0px, 0px) rotate(0deg); }
+    25% { transform: translate(2px, -2px) rotate(-5deg); }
+    50% { transform: translate(-2px, 2px) rotate(5deg); }
+    75% { transform: translate(2px, 2px) rotate(-3deg); }
+    100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+input {
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    background:#111;
+    border:1px solid gold;
+    color:white;
+}
+
+button {
+    width:100%;
+    padding:12px;
+    background:gold;
+    border:none;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#form {
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <!-- LOADING STATE -->
+    <div id="loading">
+        <div class="rocket">🚀</div>
+        <h3>Activating subscription...</h3>
+    </div>
+
+    <!-- FORM STATE -->
+    <div id="form">
+        <h2>👑 Create Account</h2>
+        <p>Finish activation to unlock FT Prime</p>
+
+        <input type="email" id="email" placeholder="Email used for payment">
+        <input type="password" id="password" placeholder="Create password">
+
+        <button onclick="create()">Activate Prime</button>
+
+        <p id="status"></p>
+    </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import {
+    getAuth,
+    createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    doc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAEyiQE_6KdvJ47g7CdVAL6XrQXX56V3MQ",
+    authDomain: "ft-games-prime.firebaseapp.com",
+    projectId: "ft-games-prime"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* ⏳ fake activation delay */
+setTimeout(() => {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("form").style.display = "block";
+}, 2000);
+
+window.create = async () => {
+    try {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+
+        await setDoc(doc(db, "users", userCred.user.uid), {
+            email: email,
+            prime: true
+        });
+
+        document.getElementById("status").textContent = "Prime activated!";
+
+        setTimeout(() => {
+            window.location.href = "/prime/";
+        }, 1000);
+
+    } catch (e) {
+        document.getElementById("status").textContent = e.message;
+    }
+};
+</script>
+
+</body>
+</html>
