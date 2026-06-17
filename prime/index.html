@@ -14,6 +14,34 @@ if (session) {
     history.replaceState({}, "", window.location.pathname);
 }
 </script>
+  <script>
+(async () => {
+    const session = localStorage.getItem("ftprime_session");
+
+    if (!session) {
+        window.location.href =
+            "https://ftgames.tybridges44.workers.dev/login";
+        return;
+    }
+
+    const res = await fetch(
+        "https://ftgames.tybridges44.workers.dev/verify",
+        {
+            headers: {
+                Authorization: session
+            }
+        }
+    );
+
+    const data = await res.json();
+
+    if (!data.loggedIn || !data.prime) {
+        localStorage.removeItem("ftprime_session");
+        window.location.href =
+            "https://ftgames.tybridges44.workers.dev/login";
+    }
+})();
+</script>
   <style>
     body {
       margin: 0;
