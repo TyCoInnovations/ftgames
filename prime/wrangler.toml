@@ -1,8 +1,0 @@
-name = "ftgames"
-main = "worker.js"
-compatibility_date = "2026-06-19"
-workers_dev = true
-
-[[kv_namespaces]]
-binding = "SESSIONS"
-id = "39ab223e440a46a8bc894e7236b3a59f"
