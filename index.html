@@ -120,6 +120,24 @@
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
+.prime-button {
+    display: inline-block;
+
+    padding: 16px 48px;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    color: white;
+    text-decoration: none;
+
+    background: #ffd700;
+
+    border-radius: 14px;
+
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
 .donate-button:hover {
     transform: translateY(-3px);
     opacity: 0.9;
@@ -128,6 +146,10 @@
     transform: translateY(-3px);
     opacity: 0.9;
     animation: button-move, 1s, ease-in-out;
+}
+.prime-button:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
 }
 
 @keyframes button-move{
@@ -189,6 +211,14 @@
         rel="noopener noreferrer"
     >
         Donate
+    </a>
+    <a
+        href="#"
+        class="prime-button"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        Prime
     </a>
     
 </div>
