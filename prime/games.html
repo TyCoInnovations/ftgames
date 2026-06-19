@@ -411,7 +411,7 @@
 
   async function checkAuth() {
     const loadingMsg = document.getElementById("loadingMsg");
-    const session    = localStorage.getItem("ftprime_session");
+    const session    = sessionStorage.getItem("ftprime_session");
 
     if (!session) {
       loadingMsg.textContent = "No session found. Redirecting to login…";
@@ -426,7 +426,7 @@
       const data = await res.json();
 
       if (!res.ok || !data.loggedIn || !data.prime) {
-        localStorage.removeItem("ftprime_session");
+        sessionStorage.removeItem("ftprime_session");
         loadingMsg.textContent = "Session expired or access denied. Redirecting…";
         setTimeout(() => { location.href = "/prime/login.html"; }, 1500);
         return;
@@ -442,7 +442,7 @@
   }
 
   async function logout() {
-    const session = localStorage.getItem("ftprime_session");
+    const session = sessionStorage.getItem("ftprime_session");
 
     if (session) {
       try {
@@ -455,7 +455,7 @@
       }
     }
 
-    localStorage.removeItem("ftprime_session");
+    sessionStorage.removeItem("ftprime_session");
     location.href = "/";
   }
 
