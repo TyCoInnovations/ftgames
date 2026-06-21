@@ -20,7 +20,7 @@
       const params  = new URLSearchParams(window.location.hash.slice(1));
       const session = params.get("session");
       if (session) {
-        localStorage.setItem("ftprime_session", session);
+        sessionStorage.setItem("ftprime_session", session);
         history.replaceState({}, "", window.location.pathname);
       }
     })();
@@ -280,7 +280,7 @@
     const loadingEl  = document.getElementById("loading");
     const loadingMsg = document.getElementById("loadingMsg");
 
-    const session = localStorage.getItem("ftprime_session");
+    const session = sessionStorage.getItem("ftprime_session");
 
     if (!session) {
       loadingMsg.textContent = "No session found. Redirecting to login…";
@@ -297,7 +297,7 @@
 
       if (!res.ok || !data.loggedIn || !data.prime) {
         // Session invalid or user is not prime – clear and redirect
-        localStorage.removeItem("ftprime_session");
+        sessionStorage.removeItem("ftprime_session");
         loadingMsg.textContent = "Session expired or access denied. Redirecting…";
         setTimeout(() => { location.href = "/prime/login.html"; }, 1500);
         return;
@@ -328,7 +328,7 @@
   }
 
   async function logout() {
-    const session = localStorage.getItem("ftprime_session");
+    const session = sessionStorage.getItem("ftprime_session");
 
     // Notify the worker to invalidate the server-side session
     if (session) {
@@ -342,7 +342,7 @@
       }
     }
 
-    localStorage.removeItem("ftprime_session");
+    sessionStorage.removeItem("ftprime_session");
     location.href = "/";
   }
 
