@@ -99,12 +99,13 @@ function redirectWithCookieClear(target, status = 302) {
     status,
     headers: {
       Location: target,
-      "Set-Cookie": `${STATE_COOKIE}=; Path=/prime; Max-Age=0; HttpOnly; Secure; SameSite=Lax`,
+      "Set-Cookie": `${STATE_COOKIE}=; Path=/prime; Max-Age=0; HttpOnly; Secure; SameSite=Strict`,
     },
   });
 }
 
 function isValidOAuthState(state = "") {
+  // login.html creates 16 random bytes and hex-encodes them into 32 chars.
   return /^[a-f0-9]{32}$/.test(state);
 }
 
@@ -165,7 +166,7 @@ function handleLogin(request, env) {
     status: 302,
     headers: {
       Location: `https://discord.com/oauth2/authorize?${params}`,
-      "Set-Cookie": `${STATE_COOKIE}=${encodeURIComponent(state)}; Path=/prime; Max-Age=600; HttpOnly; Secure; SameSite=Lax`,
+      "Set-Cookie": `${STATE_COOKIE}=${encodeURIComponent(state)}; Path=/prime; Max-Age=600; HttpOnly; Secure; SameSite=Strict`,
     },
   });
 }
@@ -342,6 +343,7 @@ export default {
     const routePath = normalizePathname(pathname);
     const origin = request.headers.get("Origin") || "";
     const hasCode = url.searchParams.has("code");
+    const hasState = url.searchParams.has("state");
     const state = url.searchParams.get("state") || "";
     // /prime serves both as the worker base URL and as the callback hand-off URL.
     const isOAuthCallbackRequest =
