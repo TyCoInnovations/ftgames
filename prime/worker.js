@@ -290,8 +290,8 @@ async function handleLogout(request, env) {
 
 export default {
   async fetch(request, env) {
-    const url           = new URL(request.url);
-    const { pathname }  = url;
+    const url          = new URL(request.url);
+    const { pathname } = url;
     const routePath    = normalizePathname(pathname);
     const origin       = request.headers.get("Origin") || "";
 
@@ -311,7 +311,7 @@ export default {
       return handleCallback(request, env);
     }
 
-    if (routePath === "/")         return Response.redirect(LOGIN_PAGE, 302);
+    if (routePath === "/")        return Response.redirect(LOGIN_PAGE, 302);
     if (routePath === "/login")    return Response.redirect(LOGIN_PAGE, 302);
     if (routePath === "/callback") return handleCallback(request, env);
     if (routePath === "/verify")   return handleVerify(request, env);
