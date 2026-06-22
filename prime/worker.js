@@ -358,10 +358,10 @@ export default {
     }
 
     // /oauth/* avoids collisions with static asset paths when using worker assets.
-    if (routePath === "/oauth/callback") {
+    if (routePath === "/oauth/callback" && request.method === "GET") {
       return handleCallback(request, env);
     }
-    if (routePath === "/oauth/login" && request.method === "GET" && hasState) {
+    if (routePath === "/oauth/login" && request.method === "GET" && isValidOAuthState(state)) {
       return handleLogin(request, env);
     }
 
