@@ -290,13 +290,16 @@ async function handleLogout(request, env) {
 
 export default {
   async fetch(request, env) {
-    const url          = new URL(request.url);
+    const url = new URL(request.url);
     const { pathname } = url;
-    const routePath    = normalizePathname(pathname);
-    const origin       = request.headers.get("Origin") || "";
+    const routePath = normalizePathname(pathname);
+    const origin = request.headers.get("Origin") || "";
+    const hasCode = url.searchParams.has("code");
+    const hasState = url.searchParams.has("state");
+    const hasError = url.searchParams.has("error");
     const isOAuthCallbackRequest =
       request.method === "GET" &&
-      (url.searchParams.has("code") || url.searchParams.has("error"));
+      ((hasCode && hasState) || hasError);
 
     // Global CORS pre-flight
     if (request.method === "OPTIONS") {

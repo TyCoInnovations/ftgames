@@ -110,7 +110,11 @@
         // are not saved in browser history, then use replace() so this callback
         // page itself does not add a history entry.
         history.replaceState({}, "", window.location.pathname);
-        location.replace(CALLBACK_URL + "?code=" + encodeURIComponent(code));
+        location.replace(
+            CALLBACK_URL +
+            "?code=" + encodeURIComponent(code) +
+            "&state=" + encodeURIComponent(returnedState || "")
+        );
     })();
 </script>
 </body>
