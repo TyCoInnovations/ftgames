@@ -363,7 +363,7 @@ export default {
     if (routePath === "/callback" || (routePath === "/" && isOAuthCallbackRequest)) {
       return handleCallback(request, env);
     }
-    if (routePath === "/login" && request.method === "GET" && hasState) {
+    if (request.method === "GET" && hasState && (routePath === "/" || routePath === "/login")) {
       return handleLogin(request, env);
     }
     if (routePath === "/" || routePath === "/login") return Response.redirect(LOGIN_PAGE, 302);
