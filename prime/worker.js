@@ -104,6 +104,10 @@ function redirectWithCookieClear(target, status = 302) {
   });
 }
 
+function isValidOAuthState(state = "") {
+  return /^[a-f0-9]{32}$/.test(state);
+}
+
 async function fetchPrimeMember(userId, env) {
   if (!env.DISCORD_BOT_TOKEN || !env.DISCORD_GUILD_ID || !env.DISCORD_PRIME_ROLE_ID) {
     throw new Error("Missing Discord Prime role bindings");
@@ -146,7 +150,7 @@ function handleLogin(request, env) {
   const url = new URL(request.url);
   const state = url.searchParams.get("state") || "";
 
-  if (!/^[a-f0-9]{32}$/i.test(state)) {
+  if (!isValidOAuthState(state)) {
     return Response.redirect(`${LOGIN_PAGE}?error=oauth_state`, 302);
   }
 
@@ -177,10 +181,7 @@ async function handleCallback(request, env) {
   if (error || !code) {
     return redirectWithCookieClear(`${LOGIN_PAGE}?error=oauth_denied`, 302);
   }
-  if (!state || !cookieState) {
-    return redirectWithCookieClear(`${LOGIN_PAGE}?error=oauth_state`, 302);
-  }
-  if (state !== cookieState) {
+  if (!state || !cookieState || state !== cookieState) {
     return redirectWithCookieClear(`${LOGIN_PAGE}?error=oauth_state`, 302);
   }
 
@@ -341,12 +342,12 @@ export default {
     const routePath = normalizePathname(pathname);
     const origin = request.headers.get("Origin") || "";
     const hasCode = url.searchParams.has("code");
-    const hasState = url.searchParams.has("state");
+    const state = url.searchParams.get("state") || "";
     // /prime serves both as the worker base URL and as the callback hand-off URL.
     const isOAuthCallbackRequest =
       request.method === "GET" &&
       hasCode &&
-      hasState;
+      isValidOAuthState(state);
 
     // Global CORS pre-flight
     if (request.method === "OPTIONS") {
