@@ -10,15 +10,15 @@
  *   SESSIONS              – KV namespace binding for session storage
  *
  * Endpoints:
- *   GET  /login     → redirect to Discord OAuth
- *   GET  /callback  → exchange Discord code for session, redirect to prime home
+ *   GET  /oauth/login     → redirect to Discord OAuth
+ *   GET  /oauth/callback  → exchange Discord code for session, redirect to prime home
  *   GET  /verify    → validate session token, return user info + prime status
  *   POST /logout    → delete session from KV
  *
  * OAuth redirect URI architecture:
  *   Discord sends the authorization code to REDIRECT_URI (auth.html).
  *   auth.html verifies the CSRF state token, then forwards the code to this
- *   worker's /callback endpoint.  The REDIRECT_URI constant below is used
+ *   worker's /oauth/callback endpoint.  The REDIRECT_URI constant below is used
  *   only in the token-exchange POST body — Discord requires it to exactly
  *   match the URI used in the original authorization request.
  *
@@ -146,7 +146,7 @@ async function checkPrimeRole(userId, env) {
 
 // ── Route handlers ────────────────────────────────────────────────────────────
 
-/** GET /login?state=…  – set state cookie and redirect to Discord OAuth. */
+/** GET /oauth/login?state=…  – set state cookie and redirect to Discord OAuth. */
 function handleLogin(request, env) {
   const url = new URL(request.url);
   const state = url.searchParams.get("state") || "";
@@ -171,7 +171,7 @@ function handleLogin(request, env) {
   });
 }
 
-/** GET /callback?code=…  – exchange code → access token → user → session. */
+/** GET /oauth/callback?code=…  – exchange code → access token → user → session. */
 async function handleCallback(request, env) {
   const url   = new URL(request.url);
   const code  = url.searchParams.get("code");
@@ -345,11 +345,7 @@ export default {
     const hasCode = url.searchParams.has("code");
     const hasState = url.searchParams.has("state");
     const state = url.searchParams.get("state") || "";
-    // /prime serves both as the worker base URL and as the callback hand-off URL.
-    const isOAuthCallbackRequest =
-      request.method === "GET" &&
-      hasCode &&
-      isValidOAuthState(state);
+    const isOAuthCallbackRequest = request.method === "GET" && hasCode && isValidOAuthState(state);
 
     // Global CORS pre-flight
     if (request.method === "OPTIONS") {
@@ -359,11 +355,11 @@ export default {
       });
     }
 
-    // Keep /callback for backward compatibility while /prime handles the current callback flow.
-    if (routePath === "/callback" || (routePath === "/" && isOAuthCallbackRequest)) {
+    // /oauth/* avoids collisions with static asset paths when using worker assets.
+    if (routePath === "/oauth/callback" || routePath === "/callback" || (routePath === "/" && isOAuthCallbackRequest)) {
       return handleCallback(request, env);
     }
-    if (request.method === "GET" && hasState && (routePath === "/" || routePath === "/login")) {
+    if (request.method === "GET" && hasState && (routePath === "/oauth/login" || routePath === "/" || routePath === "/login")) {
       return handleLogin(request, env);
     }
     if (routePath === "/" || routePath === "/login") return Response.redirect(LOGIN_PAGE, 302);
