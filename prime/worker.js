@@ -95,12 +95,14 @@ function readCookie(cookieHeader = "", name) {
 }
 
 function redirectWithCookieClear(target, status = 302) {
+  const headers = new Headers({ Location: target });
+  // Clear both current and legacy cookie paths.
+  headers.append("Set-Cookie", `${STATE_COOKIE}=; Path=/prime/oauth; Max-Age=0; HttpOnly; Secure; SameSite=Strict`);
+  headers.append("Set-Cookie", `${STATE_COOKIE}=; Path=/prime; Max-Age=0; HttpOnly; Secure; SameSite=Strict`);
+
   return new Response(null, {
     status,
-    headers: {
-      Location: target,
-      "Set-Cookie": `${STATE_COOKIE}=; Path=/prime; Max-Age=0; HttpOnly; Secure; SameSite=Strict`,
-    },
+    headers,
   });
 }
 
@@ -363,12 +365,9 @@ export default {
       return handleLogin(request, env);
     }
 
-    // Legacy routes retained for backward compatibility.
+    // Legacy callback routes retained for backward compatibility.
     if (routePath === "/callback" || (routePath === "/" && isOAuthCallbackRequest)) {
       return handleCallback(request, env);
-    }
-    if (request.method === "GET" && hasState && routePath === "/login") {
-      return handleLogin(request, env);
     }
     if (routePath === "/" || routePath === "/login") return Response.redirect(LOGIN_PAGE, 302);
     if (routePath === "/verify") return handleVerify(request, env);
