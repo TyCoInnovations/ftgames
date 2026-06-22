@@ -294,6 +294,9 @@ export default {
     const { pathname } = url;
     const routePath    = normalizePathname(pathname);
     const origin       = request.headers.get("Origin") || "";
+    const isOAuthCallbackRequest =
+      request.method === "GET" &&
+      (url.searchParams.has("code") || url.searchParams.has("error"));
 
     // Global CORS pre-flight
     if (request.method === "OPTIONS") {
@@ -303,19 +306,12 @@ export default {
       });
     }
 
-    if (
-      request.method === "GET" &&
-      routePath === "/" &&
-      (url.searchParams.has("code") || url.searchParams.has("error"))
-    ) {
+    if (routePath === "/callback" || (routePath === "/" && isOAuthCallbackRequest)) {
       return handleCallback(request, env);
     }
-
-    if (routePath === "/")        return Response.redirect(LOGIN_PAGE, 302);
-    if (routePath === "/login")    return Response.redirect(LOGIN_PAGE, 302);
-    if (routePath === "/callback") return handleCallback(request, env);
-    if (routePath === "/verify")   return handleVerify(request, env);
-    if (routePath === "/logout")   return handleLogout(request, env);
+    if (routePath === "/" || routePath === "/login") return Response.redirect(LOGIN_PAGE, 302);
+    if (routePath === "/verify") return handleVerify(request, env);
+    if (routePath === "/logout") return handleLogout(request, env);
 
     return new Response("Not Found", { status: 404 });
   },
