@@ -99,7 +99,7 @@ function redirectWithCookieClear(target, status = 302) {
     status,
     headers: {
       Location: target,
-      "Set-Cookie": `${STATE_COOKIE}=; Path=/prime; Max-Age=0; Secure; SameSite=Lax`,
+      "Set-Cookie": `${STATE_COOKIE}=; Path=/prime; Max-Age=0; HttpOnly; Secure; SameSite=Lax`,
     },
   });
 }
@@ -146,7 +146,7 @@ function handleLogin(request, env) {
   const url = new URL(request.url);
   const state = url.searchParams.get("state") || "";
 
-  if (!/^[a-f0-9]{32}$/.test(state)) {
+  if (!/^[a-f0-9]{32}$/i.test(state)) {
     return Response.redirect(`${LOGIN_PAGE}?error=oauth_state`, 302);
   }
 
@@ -343,7 +343,7 @@ export default {
     const hasCode = url.searchParams.has("code");
     const hasState = url.searchParams.has("state");
     const hasError = url.searchParams.has("error");
-    // /prime serves both as the worker base URL and as the callback handoff URL.
+    // /prime serves both as the worker base URL and as the callback hand-off URL.
     const isOAuthCallbackRequest =
       request.method === "GET" &&
       (hasCode || hasError) &&
@@ -357,6 +357,7 @@ export default {
       });
     }
 
+    // Keep /callback for backward compatibility while /prime handles the current callback flow.
     if (routePath === "/callback" || (routePath === "/" && isOAuthCallbackRequest)) {
       return handleCallback(request, env);
     }
