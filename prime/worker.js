@@ -342,11 +342,10 @@ export default {
     const origin = request.headers.get("Origin") || "";
     const hasCode = url.searchParams.has("code");
     const hasState = url.searchParams.has("state");
-    const hasError = url.searchParams.has("error");
     // /prime serves both as the worker base URL and as the callback hand-off URL.
     const isOAuthCallbackRequest =
       request.method === "GET" &&
-      (hasCode || hasError) &&
+      hasCode &&
       hasState;
 
     // Global CORS pre-flight
