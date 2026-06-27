@@ -190,11 +190,11 @@
   
 </head>
 <body>
-  <a id="homeButton" href="/games" aria-label="Return to games homepage">
+  <a id="homeButton" href="/games">
 🏠 Home
 </a>
 
-<button id="instructionsButton" type="button" aria-label="Instructions">
+<button id="instructionsButton" type="button">
 📖 Instructions
 </button>
   <div id="app"></div>
@@ -397,7 +397,7 @@
         const popupWidth = Math.min(800, Math.floor(window.innerWidth * 0.9));
         const popupHeight = Math.min(600, Math.floor(window.innerHeight * 0.9));
         window.open(
-            "instructions.html",
+            "/among-us-platformer/instructions.html",
             "instructions",
             `width=${popupWidth},height=${popupHeight},resizable=yes,scrollbars=yes,noopener,noreferrer`
         );
