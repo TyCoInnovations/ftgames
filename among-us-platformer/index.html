@@ -144,7 +144,7 @@
     #instructionsButton{
         position:fixed;
         top:10px;
-        z-index:9999999;
+        z-index:1000;
 
         display:inline-flex;
         align-items:center;
@@ -394,10 +394,12 @@
   </script>
   <script>
     document.getElementById("instructionsButton").addEventListener("click", () => {
+        const popupWidth = Math.min(800, Math.floor(window.innerWidth * 0.9));
+        const popupHeight = Math.min(600, Math.floor(window.innerHeight * 0.9));
         window.open(
             "instructions.html",
             "instructions",
-            "width=800,height=600,resizable=yes,scrollbars=yes,noopener,noreferrer"
+            `width=${popupWidth},height=${popupHeight},resizable=yes,scrollbars=yes,noopener,noreferrer`
         );
     });
   </script>
