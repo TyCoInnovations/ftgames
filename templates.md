@@ -12,6 +12,9 @@ These are injected into new code for better user experience and accessibility. M
 
 ## Tips & Tricks
 - Make sure to test your code before commiting, you can do that using [ScriptView](https://ftgames.xyz/scriptview). Our dedicated HTML test viewer.
+- Use Visual Studio Code when possible as it can automatically fill in code for you, making production move much faster
+- When you use AI to code, always double-check to make sure it has no bugs and follows our release guidelines.
+- These code injects are only templates, make sure to double-check this code and replace any placeholders with your game directory.
 
 ## Instructions and Back to Homepage Buttons
 These are injected into new game imports for accessibility and user experience. These scripts need to be injected into any new game added to FT Games.
