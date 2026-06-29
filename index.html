@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FT Games</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -20,13 +22,12 @@
             min-height: 100vh;
         }
 
+        /* NAVBAR */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             padding: 16px 24px;
-
             background: rgba(30, 30, 30, 0.9);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
@@ -52,99 +53,127 @@
             opacity: 0.7;
         }
 
-     .hero {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-
-    min-height: calc(100vh - 70px);
-
-    padding: 20px;
-}
-
-.hero h1 {
-    font-size: clamp(3rem, 7vw, 5rem);
-    margin-bottom: 24px;
-}
-
-.description {
-    max-width: 700px;
-    font-size: 1.25rem;
-    line-height: 1.6;
-    opacity: 0.8;
-
-    margin-bottom: 40px;
-}
-
-
-
-        
-.play-button, .donate-button {
-    display: inline-block;
-
-    padding: 16px 48px;
-
-    font-size: 1.3rem;
-    font-weight: bold;
-
-    color: white;
-    text-decoration: none;
-
-    background: #2d7cff;
-
-    border-radius: 14px;
-
-    box-shadow:
-        0 0 15px rgba(45, 124, 255, 0.6),
-        0 0 30px rgba(45, 124, 255, 0.3);
-
-    transition: all 0.3s ease;
-}
-
-.play-button:hover {
-    transform: translateY(-3px) scale(1.05);
-
-    box-shadow:
-        0 0 25px rgba(45, 124, 255, 0.8),
-        0 0 50px rgba(45, 124, 255, 0.5),
-        0 0 80px rgba(45, 124, 255, 0.3);
-}
-.button-group {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-
-.donate-button:hover {
-    transform: translateY(-3px);
-    opacity: 0.9;
-}
-
-
-@keyframes button-move{
- 0%{
-  transform: scale(1.0)
- }
-50%{
- transform: scale(1.5)
-}
-   100%{
-  transform: scale(1.0)
- } 
-}
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
+        .sign-up {
+            padding: 5px;
+            border: 1px solid white;
+            border-radius: 5px;
         }
 
-        p {
-            font-size: 1.2rem;
+        /* HERO */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: calc(100vh - 70px);
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 5rem);
+            margin-bottom: 24px;
+        }
+
+        .description {
+            max-width: 700px;
+            font-size: 1.25rem;
+            line-height: 1.6;
             opacity: 0.8;
+            margin-bottom: 40px;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .play-button, .donate-button {
+            display: inline-block;
+            padding: 16px 48px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            background: #2d7cff;
+            border-radius: 14px;
+            box-shadow: 0 0 15px rgba(45, 124, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 25px rgba(45, 124, 255, 0.8);
+        }
+
+        .donate-button:hover {
+            transform: translateY(-3px);
+            opacity: 0.9;
+        }
+
+        /* GAMES SECTION */
+        .games {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .games h2 {
+            margin-bottom: 20px;
+        }
+
+        .game-grid {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 40px 20px;
+        }
+
+        .game-card {
+            width: 220px;
+            padding: 20px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: white;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s ease;
+        }
+
+        .game-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .game-card p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .game-card:hover {
+            transform: translateY(-6px);
+            background: rgba(124, 58, 237, 0.2);
+            box-shadow: 0 0 25px rgba(124, 58, 237, 0.4);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
 
         @media (max-width: 600px) {
@@ -152,86 +181,25 @@
                 flex-direction: column;
                 gap: 12px;
             }
-            
         }
-footer {
-    position: fixed;
-    bottom: 10px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 12px;
-    font-family: system-ui, sans-serif;
-    opacity: 0.7;
-}
-
-footer a {
-    color: inherit;
-    text-decoration: none;
-}
-
-footer a:hover {
-    text-decoration: underline;
-}
-.logo-img{
-    width: 30px;
-    height: 30px;
-    margin-left: 0;
-}
-.sign-up{
-   padding: 5px;
-   border: 1px solid white;
-   border-radius: 5px;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-}
-
-
-
-.game-card {
-    width: 220px;
-    padding: 20px;
-    border-radius: 16px;
-
-    text-decoration: none;
-    color: white;
-    text-align: center;
-
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-
-    transition: 0.3s ease;
-}
-
-.game-card h3 {
-    margin-bottom: 10px;
-}
-
-.game-card p {
-    font-size: 0.9rem;
-    opacity: 0.7;
-}
-
-.game-card:hover {
-    transform: translateY(-6px);
-    background: rgba(124, 58, 237, 0.2);
-    box-shadow: 0 0 25px rgba(124, 58, 237, 0.4);
-}
-</style>
+    </style>
 </head>
+
 <body>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <nav class="navbar">
-        <a href="/" class="logo">FT Games</a>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/games">Games</a>
-            <a href="/about">About</a>
-            <a href="/sign_up" class="sign-up">Sign Up</a>
 
-        </div>
-    </nav>
+<nav class="navbar">
+    <a href="/" class="logo">FT Games</a>
 
-    <main class="hero">
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/games">Games</a>
+        <a href="/about">About</a>
+        <a href="/sign_up" class="sign-up">Sign Up</a>
+    </div>
+</nav>
+
+<main class="hero">
+
     <h1>Made by students, for students</h1>
 
     <p class="description">
@@ -239,46 +207,49 @@ footer a:hover {
     </p>
 
     <div class="button-group">
-    <a href="/games" class="play-button">Play</a>
-    <a
-        href="https://donate.stripe.com/4gMeVd0Hd65z6Gs10FaAw00"
-        class="donate-button"
-        target="_blank"
-        rel="noopener noreferrer"
-    >
-        Donate
-    </a>
-        <br>
-        <br>
-<br><br><br><br>
-<br><br><br>
-<section class="games">
-    <h2>🎮 Games</h2>
+        <a href="/games" class="play-button">Play</a>
 
-    <div class="game-grid">
-                <a href="/polytrack" class="game-card">
-            <h3>Poly Track</h3>
-            <p>Fast-paced driving game</p>
+        <a href="https://donate.stripe.com/4gMeVd0Hd65z6Gs10FaAw00"
+           class="donate-button"
+           target="_blank"
+           rel="noopener noreferrer">
+            Donate
         </a>
+    </div>
 
-        <a href="/minecraft_classic" class="game-card">
-            <h3>Minecraft</h3>
-            <p>Build anything your imagination can think of</p>
-        </a>
+    <!-- GAMES SECTION -->
+    <section class="games">
 
-        <a href="/flappy_dunk" class="game-card">
-            <h3>Flappy Dunk</h3>
-            <p>Dunk the ball as many times as you can. Don't touch the top!</p>
-        </a>
-   </div>
-</section>
+        <h2>🎮 Games</h2>
 
-        
-   <footer>
-    <a href="https://tyco.it.com/privacy-policy" target="_blank">Privacy Policy</a>
-</footer>
-</div>
+        <div class="game-grid">
+
+            <a href="/polytrack" class="game-card">
+                <h3>Poly Track</h3>
+                <p>Fast-paced driving game</p>
+            </a>
+
+            <a href="/minecraft_classic" class="game-card">
+                <h3>Minecraft</h3>
+                <p>Build anything your imagination can think of</p>
+            </a>
+
+            <a href="/flappy_dunk" class="game-card">
+                <h3>Flappy Dunk</h3>
+                <p>Dunk the ball as many times as you can. Don't touch the top!</p>
+            </a>
+
+        </div>
+
+    </section>
+
 </main>
+
+<footer>
+    <a href="https://tyco.it.com/privacy-policy" target="_blank">
+        Privacy Policy
+    </a>
+</footer>
 
 </body>
 </html>
