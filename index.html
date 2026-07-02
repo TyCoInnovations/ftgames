@@ -566,6 +566,10 @@ footer a:hover{
     }
   }
 
+  function formatFallbackTitle(id){
+    return String(id || '').replace(/\//g,' ').replace(/_/g,' ').trim();
+  }
+
   function buildFavoriteCard(id, catalogEntry){
     const card = document.createElement('a');
     card.className = 'game-card';
@@ -584,7 +588,7 @@ footer a:hover{
 
     const title = document.createElement('h2');
     title.className = 'game-card-title';
-    title.textContent = (catalogEntry && catalogEntry.title) ? catalogEntry.title : id.replace(/\//g,' ').replace(/_/g,' ').trim();
+    title.textContent = (catalogEntry && catalogEntry.title) ? catalogEntry.title : formatFallbackTitle(id);
     content.appendChild(title);
 
     if (catalogEntry && catalogEntry.description) {
@@ -612,9 +616,14 @@ footer a:hover{
     }
 
     const catalog = getCatalog();
+    const gameCardsByHref = new Map(
+      Array.from(document.querySelectorAll('.game-card'))
+        .map((card) => [card.getAttribute('href'), card])
+        .filter(([href]) => typeof href === 'string')
+    );
 
     favs.forEach((id)=>{
-      const featuredCard = document.querySelector(`.game-card[href="${id}"]`);
+      const featuredCard = gameCardsByHref.get(id);
       if (featuredCard) {
         container.appendChild(featuredCard.cloneNode(true));
         return;
@@ -627,7 +636,13 @@ footer a:hover{
         const fallbackCard = document.createElement('a');
         fallbackCard.className = 'game-card';
         fallbackCard.href = id;
-        fallbackCard.innerHTML = `<div class="game-card-content"><h2 class="game-card-title">${id.replace(/\//g,' ').replace(/_/g,' ').trim()}</h2></div>`;
+        const content = document.createElement('div');
+        content.className = 'game-card-content';
+        const title = document.createElement('h2');
+        title.className = 'game-card-title';
+        title.textContent = formatFallbackTitle(id);
+        content.appendChild(title);
+        fallbackCard.appendChild(content);
         container.appendChild(fallbackCard);
       }
     });

@@ -678,6 +678,10 @@ Survive each wave, dodge enemy fire, and rack up the highest score! Thanks to Ro
     }
   }
 
+  function formatFallbackTitle(id){
+    return String(id || '').replace(/\//g, ' ').replace(/_/g, ' ').trim();
+  }
+
   function saveCatalogEntry(id, entry){
     const catalog = getCatalog();
     const current = catalog[id];
@@ -710,6 +714,11 @@ Survive each wave, dodge enemy fire, and rack up the highest score! Thanks to Ro
 
     const favorites = getFavorites();
     const catalog = getCatalog();
+    const gameCardsByHref = new Map(
+      Array.from(document.querySelectorAll('.game-card-grid[aria-label="Games"] .game-card'))
+        .map((card) => [card.getAttribute('href'), card])
+        .filter(([href]) => typeof href === 'string')
+    );
     if (favorites.length === 0) {
       const message = document.createElement('p');
       message.className = 'favorites-empty-message';
@@ -719,7 +728,7 @@ Survive each wave, dodge enemy fire, and rack up the highest score! Thanks to Ro
     }
 
     favorites.forEach((id) => {
-      const original = document.querySelector(`.game-card[href="${id}"]`);
+      const original = gameCardsByHref.get(id);
       if (original) {
         const clone = original.cloneNode(true);
         const star = clone.querySelector('.fav-star');
@@ -747,7 +756,7 @@ Survive each wave, dodge enemy fire, and rack up the highest score! Thanks to Ro
 
         const title = document.createElement('h2');
         title.className = 'game-card-title';
-        title.textContent = entry.title || id;
+        title.textContent = entry.title || formatFallbackTitle(id);
         content.appendChild(title);
 
         if (entry.description) {
@@ -756,6 +765,21 @@ Survive each wave, dodge enemy fire, and rack up the highest score! Thanks to Ro
           description.textContent = entry.description;
           content.appendChild(description);
         }
+
+        card.appendChild(content);
+        container.appendChild(card);
+      } else {
+        const card = document.createElement('a');
+        card.className = 'game-card';
+        card.href = id;
+
+        const content = document.createElement('div');
+        content.className = 'game-card-content';
+
+        const title = document.createElement('h2');
+        title.className = 'game-card-title';
+        title.textContent = formatFallbackTitle(id);
+        content.appendChild(title);
 
         card.appendChild(content);
         container.appendChild(card);
@@ -783,7 +807,7 @@ Survive each wave, dodge enemy fire, and rack up the highest score! Thanks to Ro
       if (!id) return;
       card.dataset.gameId = id;
 
-      const title = card.querySelector('.game-card-title')?.textContent?.trim() || id;
+      const title = card.querySelector('.game-card-title')?.textContent?.trim() || formatFallbackTitle(id);
       const description = card.querySelector('.game-card-description')?.textContent?.trim() || '';
       const thumbnail = card.querySelector('.game-card-thumbnail')?.getAttribute('src') || '';
       saveCatalogEntry(id, { title, description, thumbnail });
