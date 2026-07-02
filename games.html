@@ -123,6 +123,7 @@ body.dark-mode #themeToggle {
     text-decoration: none;
     position: relative;
     border: 1px solid #dddddd;
+    position: relative;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     display: flex;
@@ -159,6 +160,7 @@ body.dark-mode .game-card {
 body.dark-mode .game-card-thumbnail {
     background: #333333;
 }
+<<<<<<< Updated upstream
 .fav-star {
     position: absolute;
     top: 12px;
@@ -193,15 +195,58 @@ body.dark-mode .favorites-section {
 }
 .favorites-section h2 {
     margin: 0 0 16px;
+=======
+.favorite-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    border-radius: 999px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    background: rgba(255,255,255,0.95);
+    color: #f4b400;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 2;
+}
+.favorite-toggle.is-favorite {
+    background: #f4b400;
+    color: white;
+}
+.favorites-section {
+    margin: 24px auto 12px;
+    padding: 20px;
+    max-width: 1000px;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.04);
+    border: 1px solid rgba(0,0,0,0.08);
+}
+body.dark-mode .favorites-section {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+}
+.favorites-section h2 {
+    margin-bottom: 14px;
+>>>>>>> Stashed changes
     font-size: 1.3rem;
 }
 .favorites-list {
     display: grid;
+<<<<<<< Updated upstream
     gap: 16px;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 .favorite-card {
     background: rgba(255,255,255,0.95);
+=======
+    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.favorite-card {
+    background: rgba(255,255,255,0.7);
+>>>>>>> Stashed changes
     border-radius: 14px;
     overflow: hidden;
     border: 1px solid rgba(0,0,0,0.08);
@@ -222,6 +267,7 @@ body.dark-mode .favorite-card {
     display: block;
 }
 .favorite-card-content {
+<<<<<<< Updated upstream
     padding: 12px 14px 14px;
 }
 .favorite-card-content h3 {
@@ -240,6 +286,21 @@ body.dark-mode .favorite-card {
     text-align: center;
 }
 
+=======
+    padding: 12px;
+}
+.favorite-card-content h3 {
+    margin-bottom: 6px;
+    font-size: 1rem;
+}
+.favorite-card-content p {
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+.favorites-empty {
+    opacity: 0.75;
+}
+>>>>>>> Stashed changes
 #splash-screen {
     position: fixed;
     inset: 0;
@@ -498,12 +559,18 @@ window.addEventListener("load", () => {
     </a>
     <div class="ad-label">AD</div>
 </div>
+<<<<<<< Updated upstream
 <div id="scroll">
+=======
+>>>>>>> Stashed changes
     <section id="favorites-section" class="favorites-section" aria-labelledby="favorites-heading">
       <h2 id="favorites-heading">⭐ Favorite Games</h2>
       <div id="favorites-list" class="favorites-list"></div>
     </section>
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     <section class="game-card-grid" aria-label="Games">
       <a class="game-card" href="/platformer_game">
         <img class="game-card-thumbnail" src="thumbnails/platformer-game-thumbnail.png" alt="Platformer Game thumbnail">
@@ -733,7 +800,11 @@ Survive each wave, dodge enemy fire, and rack up the highest score! Thanks to Ro
         </stripe-buy-button>
     </div>
 </div>
+<<<<<<< Updated upstream
 
 <script src="favorites.js"></script>
+=======
+  <script src="favorites.js"></script>
+>>>>>>> Stashed changes
   </body>
 </html>
