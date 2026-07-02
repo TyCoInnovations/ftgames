@@ -107,7 +107,29 @@
         button.className = 'fav-star';
         button.setAttribute('aria-label', 'Favorite game');
         card.style.position = card.style.position || 'relative';
+        button.style.position = 'relative';
+        button.style.zIndex = '3';
+        button.style.pointerEvents = 'auto';
         card.appendChild(button);
+      }
+
+      if (!button.dataset.bound) {
+        button.dataset.bound = 'true';
+        button.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+
+          const id = button.dataset.gameId;
+          if (!id) return;
+
+          const currentFavorites = getFavorites();
+          const nextFavorites = currentFavorites.includes(id)
+            ? currentFavorites.filter((entry) => entry !== id)
+            : [...currentFavorites, id];
+
+          saveFavorites(nextFavorites);
+          renderAll();
+        });
       }
 
       const isFavorite = favorites.includes(slug);
@@ -192,6 +214,12 @@
 
       saveFavorites(nextFavorites);
       renderAll();
+    });
+
+    document.addEventListener('mousedown', (event) => {
+      const button = event.target.closest('.fav-star');
+      if (!button) return;
+      event.preventDefault();
     });
   }
 

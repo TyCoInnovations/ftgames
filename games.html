@@ -121,6 +121,7 @@ body.dark-mode #themeToggle {
 .game-card {
     color: inherit;
     text-decoration: none;
+    position: relative;
     border: 1px solid #dddddd;
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
@@ -257,6 +258,12 @@ body.dark-mode .favorite-card {
     height: 100%;
     object-fit: cover;
 }
+
+#splash-screen.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
 #homebaseFooter {
     position: fixed;
     bottom: 6px;
@@ -359,20 +366,30 @@ body.dark-mode .modal-content {
 </style>
 
 <script>
-window.addEventListener("load", () => {
+function dismissSplash() {
+    const splash = document.getElementById("splash-screen");
 
-    // Splash screen
+    if (!splash) return;
+
+    splash.classList.add("is-hidden");
+
     setTimeout(() => {
-        const splash = document.getElementById("splash-screen");
-
-        if (splash) {
-            splash.style.opacity = "0";
-
-            setTimeout(() => {
-                splash.remove();
-            }, 500);
+        if (splash.parentNode) {
+            splash.remove();
         }
-    }, 3000);
+    }, 400);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', dismissSplash, { once: true });
+} else {
+    dismissSplash();
+}
+
+window.addEventListener("load", dismissSplash);
+setTimeout(dismissSplash, 800);
+
+window.addEventListener("load", () => {
 
     // Cookies
     function setCookie(name, value, days) {
